@@ -2,25 +2,25 @@
 
 ---
 
-Task on Multi-label_multi-output classification is explained below.
+Multi-label_multi-output classification approach is explained below.
 
-## Approch Explained:
-After reading the problem statement, we followed 3 steps to solve the problem i.e. `identifying problem`, 
-`exploring dataset`, `model selection`, `code`.
+## Approach:
+For solving the problem, 3 main steps were involved. `identifying problem`, `exploring dataset`, `model selection`.
+Finally, the coding part `code`.
 
 ### Identifying the problem:
-After going through the problem statement and dataset, it was observed that multi output model was needed to solve this
-problem. We had two major classes i.e. color and state (multi-output). However, different colors and states 
-could appear at the same time which made it multi-label classification.
+After going through the problem statement and dataset, it was observed that model with multiple output was needed 
+to solve this problem. We have two major classes i.e. color and state (multi-output). However, different colors and 
+states could appear at the same time which made it multi-label classification.
 
 ### Dataset exploration:
-A total of `300` images/json were provided which is very low number for a deep neural network. After exploring 
-the dataset, we observed that around `46` image did not have any color assigned to them. It would have made color
-class empty, so we assign `no_color` label to those. Moreover, we converted all labels to lower case so Green and GREEN
+A total of `300` images/json were provided which is very low number for a deep neural network. Morever, After exploring 
+the dataset, we observed that around `46` json did not have any color assigned to them. It would have made color
+class empty, so we assigned `no_color` label to those. However, we converted all labels to lower case so Green and GREEN
 could be counted as one green label.
 
-There were total 16 unique labels in color class (including no_color) and 3 unqiue label in state class. 
-Out of these *19*, *9* of had below 10 instance in the label. It was clearly seen that there is imbalance but due to the
+There were total 16 unique labels in color class (including no_color) and 3 unqiue labels in state class. 
+Out of these *19*, *9* of them have 10 instance. It was clearly seen that there is imbalance but due to the
 time restriction we went for the modeling and kept the data as it is.
 ```
 green: 68
@@ -44,11 +44,11 @@ old: 285
 damaged: 98
 ```
 ### Model Selection:
-We did not go for custom modeling due to the small dataset. We wanted to use a pretrained model, so we can use their 
-pretrained weights in order make up for the dataset. Bigger architecture like `ResNet` and `Inception` are not used as
-the problem seems rather simple. We used pretrained mobilenetv2 and attach 2 classification layer to it
+We did not go for custom modeling due to the small dataset constraint. We wanted to use a pretrained mode for the 
+pretrained weights advantage in order make up for the low dataset. Bigger architecture like `ResNet` and `Inception` 
+are not used as the problem seems rather simple. We used pretrained mobilenetv2 and attach 2 classification layers to it
 (color and state). For details, please look into the `model.py` file. Selection of loss and optimizer function
-is also explained in the code files.
+are also explained in the code files.
 
 ### Code:
 Code structure is modular in nature.
@@ -59,13 +59,13 @@ python3 main.py --mode train
 
 - `main.py` main script which calls other modules
 - `configuration.ini` configuration parameters can be setup here.
-- `model.py` contains modeling details.
-- `train.py` contains training loop.
+- `model.py` modeling details.
+- `train.py` training loop.
 - `test.py` used for model testing.
 - `utils` have utility funcitons
   - `config.py` reading _configuration.ini_ and distributing it to other python modules
   - `helper_functions.py` have all the helper function used in the project.
-- `dataset` have dataset related functions.
+- `dataset` dataset related functions.
   - `data_attributes.py` used for data insights
   - `data_loading.py` loading the data into required format for model
   - `data_split.py` spliting the data between train, val and test.
@@ -73,8 +73,8 @@ python3 main.py --mode train
 Before running the code, please install packages fomr the `requirements.txt` file.
 
 ## Analysis
-While triaining, we get the accuracy of combine color and state class as well with loss. Accuracy is a weak metric here for
-evaluation due to the imbalance dataset and the multi labeled output. Although precision, recall and f1 score is also
+While triaining, we get the accuracy of combine color and state class as well with loss. Accuracy is a weak metric here 
+for evaluation due to the imbalance dataset and the multi labeled output. Although precision, recall and f1 score is also
 extracted from the output.
 
 ![Training Graphs](graphs/loss_acc_graph.PNG?raw=true "Loss Accuracy Graph (training and validation)")

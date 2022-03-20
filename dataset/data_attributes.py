@@ -8,6 +8,7 @@ class AttributeDataset:
     Purpose of this class is to read data directory and find different attribute of the dataset
     i.e total number of classes, total number of images, instance of each class.
     """
+
     def __init__(self, dataset_paths):
         self.color_labels = []
         self.state_labels = []
@@ -16,7 +17,7 @@ class AttributeDataset:
         # shuffle the dataset_paths as data will be split based path list
         shuffle(dataset_paths)
         for img_path, anno in dataset_paths:
-            with open(anno, 'r') as f:
+            with open(anno, "r") as f:
                 anno_dict = json.load(f)
 
             # assign "no_color" label to those which have no color specified in json.

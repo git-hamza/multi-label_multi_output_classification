@@ -10,6 +10,7 @@ class AssetsDataset(Dataset):
     the output is an image and the labels are color and state. Moreoever, color and state also have
     different classes inside them.
     """
+
     def __init__(self, attrib, data_range, transform=None):
         super().__init__()
         self.transform = transform
@@ -38,7 +39,7 @@ class AssetsDataset(Dataset):
             "img": img,
             "labels": {
                 "color_labels": encode_label(self.color_labels[idx], self.attrib.color_classes),
-                "state_labels": encode_label(self.state_labels[idx], self.attrib.state_classes)
-            }
+                "state_labels": encode_label(self.state_labels[idx], self.attrib.state_classes),
+            },
         }
         return dict_data

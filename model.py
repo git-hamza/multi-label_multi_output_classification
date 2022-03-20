@@ -15,6 +15,7 @@ class MultiOutputModel(nn.Module):
     pretrained imagenet weight and also restricted outself from going towards bigger architecture
     e.g ResNet, Inception etc.
     """
+
     def __init__(self, n_color_classes, n_state_classes):
         super().__init__()
         self.base_model = models.mobilenet_v2(pretrained=True).features
@@ -26,12 +27,12 @@ class MultiOutputModel(nn.Module):
 
         self.pool = nn.AdaptiveAvgPool2d((1, 1))
 
-        self.color = nn.Sequential(nn.Dropout(p=0.2),
-                                   nn.Linear(in_features=last_channel,
-                                             out_features=n_color_classes))
-        self.state = nn.Sequential(nn.Dropout(p=0.2),
-                                   nn.Linear(in_features=last_channel,
-                                             out_features=n_state_classes))
+        self.color = nn.Sequential(
+            nn.Dropout(p=0.2), nn.Linear(in_features=last_channel, out_features=n_color_classes)
+        )
+        self.state = nn.Sequential(
+            nn.Dropout(p=0.2), nn.Linear(in_features=last_channel, out_features=n_state_classes)
+        )
         self.sigm = nn.Sigmoid()
 
     def forward(self, x):
@@ -41,10 +42,7 @@ class MultiOutputModel(nn.Module):
         # reshape from [batch, channels, 1, 1] to [batch, channels] to put it into classifier
         x = torch.flatten(x, 1)
 
-        return {
-            'color': self.sigm(self.color(x)),
-            'state': self.sigm(self.state(x))
-        }
+        return {"color": self.sigm(self.color(x)), "state": self.sigm(self.state(x))}
 
     def get_loss(self, net_output, ground_truth):
         """
@@ -56,7 +54,7 @@ class MultiOutputModel(nn.Module):
         For loss we choose BCS instead of CCE because we wanted each prediction inside color and state
         to be treated independently.
         """
-        color_loss = func.binary_cross_entropy(net_output['color'], ground_truth['color_labels'])
-        state_loss = func.binary_cross_entropy(net_output['state'], ground_truth['state_labels'])
+        color_loss = func.binary_cross_entropy(net_output["color"], ground_truth["color_labels"])
+        state_loss = func.binary_cross_entropy(net_output["state"], ground_truth["state_labels"])
         loss = color_loss + state_loss
-        return loss, {'color': color_loss, 'state': state_loss}
+        return loss, {"color": color_loss, "state": state_loss}

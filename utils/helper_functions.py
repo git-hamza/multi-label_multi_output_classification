@@ -34,14 +34,14 @@ def calculate_metrics(output, target, thresh=0.6):
     P.S. Not that accuracy should matter much in this case, reason is accuracy of each color should
     matter rather than the sum of whole color class. Moreover, the dataset is also imbalance and low.
     """
-    predicted_color = output['color'].cpu().detach()
+    predicted_color = output["color"].cpu().detach()
     predicted_color = predicted_color.numpy()
-    gt_color = target['color_labels'].cpu()
+    gt_color = target["color_labels"].cpu()
     gt_color = gt_color.numpy()
 
-    predicted_state = output['state'].cpu().detach()
+    predicted_state = output["state"].cpu().detach()
     predicted_state = predicted_state.numpy()
-    gt_state = target['state_labels'].cpu()
+    gt_state = target["state_labels"].cpu()
     gt_state = gt_state.numpy()
 
     accuracy_color = 0
@@ -51,13 +51,13 @@ def calculate_metrics(output, target, thresh=0.6):
         warnings.simplefilter("ignore")
         for i in range(len(gt_color)):
             pred_color = predicted_color[i]
-            pred_color = np.where(pred_color <= thresh, 0., 1.)
+            pred_color = np.where(pred_color <= thresh, 0.0, 1.0)
             pred_state = predicted_state[i]
-            pred_state = np.where(pred_state <= thresh, 0., 1.)
+            pred_state = np.where(pred_state <= thresh, 0.0, 1.0)
             accuracy_color += balanced_accuracy_score(y_true=gt_color[i], y_pred=pred_color)
             accuracy_state += balanced_accuracy_score(y_true=gt_state[i], y_pred=pred_state)
-        accuracy_color = accuracy_color/len(gt_color) * 100
-        accuracy_state = accuracy_state/len(gt_state) * 100
+        accuracy_color = accuracy_color / len(gt_color) * 100
+        accuracy_state = accuracy_state / len(gt_state) * 100
 
     return accuracy_color, accuracy_state
 
@@ -109,12 +109,12 @@ def decode_pred(pred, attrib, thresh=0.6):
     """
     decode numeric prediction to the required output.
     """
-    pred_color = pred['color'].cpu().detach().numpy()
+    pred_color = pred["color"].sigmoid().cpu().detach().numpy()
     pred_color = np.where(pred_color <= thresh, False, True)
     pred_color = pred_color[0].tolist()
     colors = [attrib.color_classes[i] for i in range(len(attrib.color_classes)) if pred_color[i]]
 
-    pred_state = pred['state'].cpu().detach().numpy()
+    pred_state = pred["state"].sigmoid().cpu().detach().numpy()
     pred_state = np.where(pred_state <= thresh, False, True)
     pred_state = pred_state[0].tolist()
     state = [attrib.state_classes[i] for i in range(len(attrib.state_classes)) if pred_state[i]]

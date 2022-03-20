@@ -16,9 +16,9 @@ from utils.helper_functions import zip_dataset, checkpoint_load
 import utils.config as cfg
 
 
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='Model Running Pipeline')
-    parser.add_argument('--mode', type=str, default='test')
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Model Running Pipeline")
+    parser.add_argument("--mode", type=str, default="train")
     args = parser.parse_args()
 
     All_files = zip_dataset(cfg.DATASET_PATH)
@@ -41,8 +41,9 @@ if __name__ == '__main__':
 
     # loading model
     print("Loading Model....")
-    model = MultiOutputModel(n_color_classes=data_attrib.num_colors,
-                             n_state_classes=data_attrib.num_states).to(device)
+    model = MultiOutputModel(
+        n_color_classes=data_attrib.num_colors, n_state_classes=data_attrib.num_states
+    ).to(device)
 
     if args.mode == "train":
         train(model, train_loader, val_loader, device)
@@ -58,4 +59,10 @@ if __name__ == '__main__':
 
             print("___________________________________")
             print("State Classification Report")
-            print(print(classification_report(results[2], results[3], target_names=data_attrib.state_classes)))
+            print(
+                print(
+                    classification_report(
+                        results[2], results[3], target_names=data_attrib.state_classes
+                    )
+                )
+            )

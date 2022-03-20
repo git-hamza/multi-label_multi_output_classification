@@ -15,10 +15,10 @@ def test(model, test_dataset, thresh=0.6):
     gt_state = []
     for batch in test_dataset:
         pred = model(batch["img"].unsqueeze(0))
-        pred_color = pred["color"].cpu().detach().numpy()
-        pred_color = np.where(pred_color <= thresh, 0., 1.)
-        pred_state = pred["state"].cpu().detach().numpy()
-        pred_state = np.where(pred_state <= thresh, 0., 1.)
+        pred_color = pred["color"].sigmoid().cpu().detach().numpy()
+        pred_color = np.where(pred_color <= thresh, 0.0, 1.0)
+        pred_state = pred["state"].sigmoid().cpu().detach().numpy()
+        pred_state = np.where(pred_state <= thresh, 0.0, 1.0)
 
         prediction_color.append(pred_color[0])
         gt_color.append(batch["labels"]["color_labels"].cpu().numpy())
@@ -36,5 +36,4 @@ def infer_single_image(model, data_attrib, img):
     img = img.unsqueeze(0)
     model.eval()
     pred = model(img)
-    print(decode_pred(pred,data_attrib))
-
+    print(decode_pred(pred, data_attrib))
