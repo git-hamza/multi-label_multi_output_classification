@@ -1,0 +1,7 @@
+matplotlib==3.5.1
+numpy==1.22.3
+Pillow==9.0.1
+scikit_learn==1.0.2
+torch==1.9.0+cpu
+torchvision==0.10.0+cpu
+wandb
