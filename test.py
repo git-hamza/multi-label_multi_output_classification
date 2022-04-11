@@ -5,7 +5,7 @@ from utils.helper_functions import decode_pred
 def test(model, test_dataset, thresh=0.6):
     """
     This function is used for inference, it takes input, test_dataset and thresh as an input.
-    It output list of numpy arrays prediciton as well as ground trurth for the provided test_dataset
+    It output list of numpy arrays prediction as well as ground truth for the provided test_dataset
     for each class i.e color and state.
     This data is used in main to provide classification report i.e precision, recall and f1 score.
     """

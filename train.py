@@ -13,15 +13,15 @@ if cfg.WANDB_FLAG:
 
 def train(model, train_loader, val_loader, device):
     """
-    This function purpose is to execte training loop.
-    It takes model, trian_loader, val_loader and device as an input.
+    This function is used to execute training loop.
+    It takes model, train_loader, val_loader and device as an input.
     """
     dataloaders_dict = {"train": train_loader, "val": val_loader}
 
     # loading optimizer, choose adam as it is one of the best and takes less time to train the model
     optimizer = torch.optim.Adam(model.parameters(), lr=cfg.LEARNING_RATE)
 
-    # This specific sceduler is used to update the learning rate when val loss stop improving
+    # This specific scheduler is used to update the learning rate when val loss stop improving
     scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, patience=2)
 
     # loss is set to np.inf so later can be compared with val loss and update it.

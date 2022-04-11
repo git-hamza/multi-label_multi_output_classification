@@ -5,8 +5,8 @@ from random import shuffle
 
 class AttributeDataset:
     """
-    Purpose of this class is to read data directory and find different attribute of the dataset
-    i.e total number of classes, total number of images, instance of each class.
+    Purpose of this class is to read data directory and find different attributes of the dataset
+    i.e total number of classes, total number of images, instances of each class.
     """
 
     def __init__(self, dataset_paths):
@@ -40,9 +40,9 @@ class AttributeDataset:
         self.num_colors = len(self.color_classes)
         self.num_states = len(self.state_classes)
 
-    def class_occurence_count(self):
+    def class_occurrence_count(self):
         """
-        This function can be used to see each label occurence in the dataset
+        This function can be used to see each label occurrence in the dataset
         """
         for i in self.color_classes:
             print(f"{i}: {self.color_list.count(i)}")

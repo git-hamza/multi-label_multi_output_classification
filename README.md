@@ -1,27 +1,28 @@
-# multi-label_multi_output_classification
+# Multi label multi output classification
 
 ---
 
 Multi-label_multi-output classification approach is explained below.
 
 ## Approach:
-For solving the task, 3 main steps were involved. `identifying problem`, `exploring dataset`, `model selection`.
+For solving the task, 3 main steps were involved. `Problem identification`, `EDA`, `Model Selection`.
 Finally, the coding part `code`.
 
-### Identifying the problem:
-After going through the problem statement and dataset, it was observed that model with multiple outputswas needed 
-to solve this problem. We have two major classes i.e. color and state (multi-output). However, different colors and 
-states could appear at the same time which made it multi-label classification.
+### Problem identification:
+After going through the problem statement, it is decided that a classification model with multiple output 
+(multiple labels) is need of the hour. We have two major classes i.e. color and state (multi-output). 
+However, different colors and states could appear at the same time which made it multi-label classification.
 
-### Dataset exploration:
-A total of `300` images/json were provided which is very low for a deep neural network. Moreover, After exploring 
+### EDA:
+A total of `300` images/json were provided (a small number for a deep neural network). After exploring 
 the dataset, we observed that `46` json did not have any color assigned to them. It would have made color
-class empty, so we assigned `no_color` label to those. However, we converted all labels to lower case so Green and GREEN
-could be counted as one green label.
+class empty, so we assigned `no_color` label to those. However, we converted all labels to lower case e.g.
+Green and GREEN could be counted as one green label.
 
-There were total 16 unique labels in color class (including no_color) and 3 unqiue labels in state class. 
-Out of these *19*, *9* of them have 10 instance. It was clearly seen that there is imbalance but due to the
-time restriction we went for the modeling and kept the data as it is.
+There were total 16 unique labels in color class (including no_color) and 3 unique labels in state class. 
+Out of the total *19* classes, *9* of them have less than 10 instance. It was clearly seen that there is imbalance 
+in the dataset but due to the time restriction we went for the modeling and kept the data as it is.
+
 ```
 green: 68
 gray: 36
@@ -44,43 +45,43 @@ old: 285
 damaged: 98
 ```
 ### Model Selection:
-We did not go for custom modeling due to the small dataset. We wanted to use a pretrained model for the 
-pretrained weights advantage in order make up for the small dataset. Bigger architecture like `ResNet` and `Inception` 
-are not used as the problem seems rather simple. We used pretrained mobilenetv2 and attached 2 classification layers to it
-(color and state). For details, please look into the `model.py` file. Selection of loss and optimizer function
-are also explained in the code files.
+Custom model was out of option due to the size of dataset bottleneck. Instead, we went for a pretrained model to use
+its pretrained weights to our advantage in order make up for the small dataset. Bigger architecture like `ResNet` 
+and `Inception` are not used as the problem seems rather simple. We used pretrained *mobilenetv2* and attached 2 
+classification layers to it(color and state). For details, please look into the `model.py` file. 
+Selection of loss and optimizer function are also explained in the code files.
 
-### Code:
+### Source code:
 Code structure is modular in nature.
-For running the code, set configuration parameters and run the code as `train` or `test` by executing following command.
+Set configuration parameters in *configuration.ini* and run the code as `train` or `test` by executing following command.
 ```bash
 python3 main.py --mode train
 ```
 
 - `main.py` main script which calls other modules
-- `configuration.ini` configuration parameters can be set here.
-- `model.py` modeling details.
-- `train.py` training loop.
-- `test.py` used for model testing.
-- `utils` utility funcitons
+- `configuration.ini` configuration parameters can be set here
+- `model.py` modeling details
+- `train.py` training loop
+- `test.py` for model testing
+- `utils` utility functions
   - `config.py` reading _configuration.ini_ and distributing it to other python modules
   - `helper_functions.py` all the helper function used in the project.
 - `dataset` dataset related functions.
   - `data_attributes.py` used for data insights
   - `data_loading.py` loading the data into required format for model
-  - `data_split.py` spliting the data between train, val and test.
+  - `data_split.py` splitting the data between train, val and test.
 
-Before running the code, please install packages from the `requirements.txt` file.
+**Note:** Before running the code, please install packages from the `requirements.txt` file.
 
 ## Analysis
-While triaining, we get the accuracy of combine color and state class as well with loss. Accuracy is a weak metric 
-for evaluation due to the imbalance dataset and the multi labeled output. Although precision, recall and f1 score is also
+While training, we get the loss and accuracy of combine color and state class. Accuracy metric is a weak evaluation
+metric in our case due to multi labeled output and imbalance dataset. Although precision, recall and f1 scores are also
 extracted from the output.
 
 ![Training Graphs](graphs/loss_acc_graph.PNG?raw=true "Loss Accuracy Graph (training and validation)")
 
-As the dataset was pretty small, so results on test testset was not very convincing. However, metric for both training
-and testing data `(thresh=0.5)` are shown below.
+The dataset is pretty small, so results on test set was not good. However, metric for both training data `(thresh=0.5)` 
+is shown below.
 
 Training:
 ```
@@ -112,37 +113,5 @@ State Classification Report
          new       1.00      0.00      0.01       240
          old       1.00      0.95      0.97       240
      damaged       1.00      0.33      0.49       240
-
-```
-
-Testing:
-```
-Color Classification Report
-              precision    recall  f1-score   support
-
-      orange       0.00      0.00      0.00         0
-       taupe       0.00      0.00      0.00         0
-      silver       0.00      0.00      0.00         0
-       black       0.00      0.00      0.00         0
-       ochre       0.00      0.00      0.00         0
-        gold       1.00      0.03      0.06        30
-       umber       0.00      0.00      0.00         0
-         red       0.00      0.00      0.00         0
-      yellow       0.00      0.00      0.00         0
-       white       0.00      0.00      0.00         0
-       ivory       0.00      0.00      0.00         0
-    no_color       0.00      0.00      0.00         0
-        gray       0.00      0.00      0.00         0
-       brown       0.00      0.00      0.00         0
-       green       0.00      0.00      0.00         0
-         tan       0.00      0.00      0.00         0
-
-___________________________________
-State Classification Report
-              precision    recall  f1-score   support
-
-     damaged       0.00      0.00      0.00         0
-         old       0.00      0.00      0.00         0
-         new       0.00      0.00      0.00        30
 
 ```

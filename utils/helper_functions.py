@@ -31,8 +31,9 @@ def calculate_metrics(output, target, thresh=0.6):
     """
     This function is used inside training loop to find accuracy of each class i.e color, state
     after each epoch.
-    P.S. Not that accuracy should matter much in this case, reason is accuracy of each color should
-    matter rather than the sum of whole color class. Moreover, the dataset is also imbalance and low.
+    P.S. Not that accuracy should matter much in our use case, reason being accuracy of each color
+    should matter rather than the sum of whole color class.
+    Moreover, the dataset is also imbalance and low.
     """
     predicted_color = output["color"].cpu().detach()
     predicted_color = predicted_color.numpy()

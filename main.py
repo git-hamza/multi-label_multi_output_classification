@@ -26,8 +26,8 @@ if __name__ == "__main__":
     print("Loading attributes....")
     data_attrib = AttributeDataset(All_files)
 
-    # spliting the dataset and applying transformation
-    print("Spliting Dataset.....")
+    # splitting the dataset and applying transformation
+    print("Splitting Dataset.....")
     train_dataset, val_dataset, test_dataset = split_data(All_files, data_attrib)
 
     # Dataloader
@@ -59,10 +59,4 @@ if __name__ == "__main__":
 
             print("___________________________________")
             print("State Classification Report")
-            print(
-                print(
-                    classification_report(
-                        results[2], results[3], target_names=data_attrib.state_classes
-                    )
-                )
-            )
+            print(classification_report(results[2], results[3], target_names=data_attrib.state_classes))

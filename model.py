@@ -6,13 +6,13 @@ import torchvision.models as models
 
 class MultiOutputModel(nn.Module):
     """
-    Purpose of this classes is to build the model. As we treated the problem as multi-output
+    Purpose of this classes is to build the model. We treated the problem as multi-output
     multi-class classification, so we output two final classification layers i.e one for the state,
     one for the colors.
 
-    We have chosen mobilenetv2 and its pretrained weights. Mobilenetv3 is a light weight architecture
-    and works better on simple problems. As we are restricted by the dataset size, we went for
-    pretrained imagenet weight and also restricted outself from going towards bigger architecture
+    We have chosen mobilenetv2 and its pretrained weights. Mobilenetv2 is a light weight architecture
+    and works better on simple problems. We are restricted by the dataset size, so we went for
+    pretrained imagenet weight and also restricted ourself from going towards bigger architectures
     e.g ResNet, Inception etc.
     """
 
@@ -47,9 +47,9 @@ class MultiOutputModel(nn.Module):
     def get_loss(self, net_output, ground_truth):
         """
         Choosing loss function and final layer activation was important part.
-        For activation function, as we can have multiple color and state at once, so we opted
-        for sigmoid rather than softmax as softmax predicted probabilities sum is 1 and there
-        couldn't be several correct outputs.
+        We can have multiple color and state at once, so we opted for sigmoid activation function
+        rather than softmax because softmax predicted probabilities sum is 1 and
+        there couldn't be several correct outputs.
 
         For loss we choose BCS instead of CCE because we wanted each prediction inside color and state
         to be treated independently.

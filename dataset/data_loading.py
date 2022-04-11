@@ -6,8 +6,8 @@ from utils.helper_functions import encode_label
 class AssetsDataset(Dataset):
     """
     Purpose of this class is to load the assets dataset.
-    As we are treating the problem as multi output, multiclass classification, that is why
-    the output is an image and the labels are color and state. Moreoever, color and state also have
+    We are treating the problem as multi output, multiclass classification, that is why
+    the output is an image and the labels are color and state. Moreover, color and state also have
     different classes inside them.
     """
 
